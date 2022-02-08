@@ -1,0 +1,3 @@
+void prompt() {
+	printf(">");
+}

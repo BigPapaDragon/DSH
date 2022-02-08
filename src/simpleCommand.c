@@ -1,6 +1,3 @@
-#include <string.h>
-#include <stdlib.h>
-
 #define SIMPLE_CMD_ARG_LIM 10
 
 // Simple command: cmd_and_args
@@ -9,7 +6,7 @@ struct SimpleCommand {
 	// Number of available arg slots
 	int _numAvailableArgs;
 
-	// Number of Arguements
+	// Number of Arguements, always points to the next free location in Arguements array
 	int _numArgs;
 
 	// Arguement list
@@ -70,6 +67,11 @@ int insertArg(struct SimpleCommand *simcmd, char * arg) {
 			return -2;
 		}
 	}
+
+	// simcmd->args is null terminated list of Arguements
+	simcmd->args[simcmd->_numArgs] = NULL;
+
+	return simcmd->_numArgs;
 }
 
 // Debug functions, not to be used in production and hence dont need error checking

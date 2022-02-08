@@ -1,5 +1,12 @@
 #include <stdio.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <string.h>
 
+#include "src/simpleCommand.c"
+#include "src/command.c"
 #include "src/commandTable.c"
 
 struct Command *cmd;
@@ -9,6 +16,9 @@ struct CommandTable *cmdTab;
 
 #include "lex.yy.c"
 #include "y.tab.c"
+#include "src/builtin.c"
+#include "src/prompt.c"
+#include "src/execute.c"
 
 void dsh_loop(void);
 
@@ -23,30 +33,3 @@ int main() {
 	//return EXIT_SUCCESS;
 	return 0;
 }
-
-void dsh_loop(void) {
-	cmdTab = cmdTableInit();
-
-	int i = 0;	
-
-	do {
-		printf("> ");
-		yyparse();
-		
-		//status = dsh_execute(args);
-		cmdTabEnt = cmdTabEntryInit(cmd);
-		insertCommand(cmdTab, cmdTabEnt);
-
-		// Set cmd and simcmd to NULL to recieve the next command.
-		cmd = NULL;
-		simcmd = NULL;
-		cmdTabEnt = NULL;
-		
-		i++;
-
-	} while (i < 5);//status);
-	
-	printCommands(cmdTab);
-	
-}
-

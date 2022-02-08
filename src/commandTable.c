@@ -1,5 +1,3 @@
-#include "command.c"
-
 #define CMD_HIS_TABLE_LIM 1000
 
 long unsigned CURR_CMD_ID = 0;

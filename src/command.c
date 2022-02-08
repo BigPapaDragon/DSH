@@ -1,5 +1,3 @@
-#include "simpleCommand.c"
-
 #define CMD_SIMPLE_CMD_LIM 5
 
 // Command: command_line 
@@ -8,7 +6,7 @@ struct Command {
 	// Number of available SimpleCommand Slots
 	int _numAvailableSimpleCmds;
 
-	// Number of Simple Command
+	// Number of Simple Command, always points to the next free location in Simple Command array
 	int _numSimpleCmds;
 
 	// Array of Simple Command
@@ -70,7 +68,7 @@ struct Command *cmdInit() {
 int insertSimpleCmd (struct Command *cmd, struct SimpleCommand *simcmd) {
 	
 	cmd->simpleCmds[cmd->_numSimpleCmds++] = simcmd;
-
+	
 	if(cmd->_numSimpleCmds >= cmd->_numAvailableSimpleCmds) {
 		cmd->_numAvailableSimpleCmds = cmd->_numAvailableSimpleCmds + CMD_SIMPLE_CMD_LIM;
 		cmd->simpleCmds = realloc(cmd->simpleCmds, cmd->_numAvailableSimpleCmds * sizeof(struct SimpleCommand*));
@@ -79,6 +77,10 @@ int insertSimpleCmd (struct Command *cmd, struct SimpleCommand *simcmd) {
 			return -1;
 		}
 	}
+
+	// cmd->simpleCmds is null terminated list of SimpleCommand objects
+	cmd->simpleCmds[cmd->_numSimpleCmds] = NULL;
+
 	return cmd->_numSimpleCmds;
 }
 
